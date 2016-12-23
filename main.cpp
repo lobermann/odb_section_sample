@@ -5,7 +5,7 @@
 #include <odb_gen/ODBFile.h>
 #include <odb_gen/ODBFile_odb.h>
 
-#include <odb/mysql/database.hxx>
+//#include <odb/mysql/database.hxx>
 #include <odb/sqlite/database.hxx>
 
 #include <odb/transaction.hxx>
@@ -17,11 +17,13 @@
 class CDBWrapper {
 public:
   CDBWrapper() {
-    std::string type = "mysql";
+    /*std::string type = "mysql";
     if (type == "mysql") {
-      m_db = std::shared_ptr<odb::core::database>(new odb::mysql::database("kodi", "kodi", "common", "127.0.0.1", 3306));
-    } else {
-      m_db = std::shared_ptr<odb::core::database>(new odb::sqlite::database("/common.db",
+      m_db = std::shared_ptr<odb::core::database>(new odb::mysql::database("test", "test", "test", "127.0.0.1", 3306));
+    }
+    else*/
+    {
+      m_db = std::shared_ptr<odb::core::database>(new odb::sqlite::database("common.db",
                                                                             SQLITE_OPEN_READWRITE |
                                                                             SQLITE_OPEN_CREATE));
     }
@@ -33,6 +35,7 @@ public:
   void init() {
     odb::core::transaction t(m_db->begin());
     odb::core::schema_catalog::migrate(*m_db);
+    //odb::core::schema_catalog::create_schema(*m_db);
     t.commit();
   }
 
