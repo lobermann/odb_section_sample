@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include <odb_gen/ODBData.h>
-#include <odb_gen/ODBData_odb.h>
-#include <odb_gen/ODBFile.h>
-#include <odb_gen/ODBFile_odb.h>
+//#include <ODBData.h>
+#include "ODBData-odb.hxx"
+//#include <odb_gen/ODBFile.h>
+//#include <odb_gen/ODBFile_odb.h>
 
-//#include <odb/mysql/database.hxx>
+#include <odb/mysql/database.hxx>
 #include <odb/sqlite/database.hxx>
 
 #include <odb/transaction.hxx>
@@ -17,11 +17,11 @@
 class CDBWrapper {
 public:
   CDBWrapper() {
-    /*std::string type = "mysql";
+    std::string type = "mysql";
     if (type == "mysql") {
-      m_db = std::shared_ptr<odb::core::database>(new odb::mysql::database("test", "test", "test", "127.0.0.1", 3306));
+      m_db = std::shared_ptr<odb::core::database>(new odb::mysql::database("odb_test", "odb_test", "odb_test", "127.0.0.1", 3306));
     }
-    else*/
+    else
     {
       m_db = std::shared_ptr<odb::core::database>(new odb::sqlite::database("common.db",
                                                                             SQLITE_OPEN_READWRITE |
@@ -92,20 +92,25 @@ int main() {
       db.getDB()->update(*data, data->section_two);
 
       std::cout << "Created Data: " << data->m_title << std::endl;
-
-      if(odb_transaction)
-        odb_transaction->commit();
     }
+
+    if(odb_transaction)
+      odb_transaction->commit();
   }
 
   {
+    std::shared_ptr<odb::transaction> odb_transaction (db.getTransaction());
+
     typedef odb::query<ODBView_Data> query;
 
-    odb::result<ODBView_Data> res(db.getDB()->query<ODBView_Data>(query::file::filename == "1_123.txt"));
+    odb::result<ODBView_Data> res(db.getDB()->query<ODBView_Data>(query::file::filename.like("%.txt")));
     for (odb::result<ODBView_Data>::iterator iter = res.begin(); iter != res.end(); iter++)
     {
-
+      std::cout << "Query Result: " << iter->data->m_idData << std::endl;
     }
+
+    if(odb_transaction)
+      odb_transaction->commit();
   }
 
 

@@ -47,7 +47,7 @@ foreach(header ${OdbCMake_ODB_HEADERS})
     configure_file(${header} ${ODB_COMPILE_OUTPUT_DIR}/${header} COPYONLY)
 endforeach()
 
-add_library(odb_binding STATIC ${SOURCES} ${HEADERS})
+add_library(odb_binding STATIC ${SOURCES})
 set_target_properties(odb_binding PROPERTIES LINKER_LANGUAGE CXX)
 
 set(SOURCE_FILES main.cpp)
