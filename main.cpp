@@ -5,7 +5,7 @@
 //#include <odb_gen/ODBFile.h>
 //#include <odb_gen/ODBFile_odb.h>
 
-#include <odb/mysql/database.hxx>
+//#include <odb/mysql/database.hxx>
 #include <odb/sqlite/database.hxx>
 
 #include <odb/transaction.hxx>
@@ -17,11 +17,11 @@
 class CDBWrapper {
 public:
   CDBWrapper() {
-    std::string type = "mysql";
+    /*std::string type = "mysql";
     if (type == "mysql") {
       m_db = std::shared_ptr<odb::core::database>(new odb::mysql::database("odb_test", "odb_test", "odb_test", "127.0.0.1", 3306));
     }
-    else
+    else*/
     {
       m_db = std::shared_ptr<odb::core::database>(new odb::sqlite::database("common.db",
                                                                             SQLITE_OPEN_READWRITE |
